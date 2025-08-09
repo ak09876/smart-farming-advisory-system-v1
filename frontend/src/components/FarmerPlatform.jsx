@@ -185,35 +185,35 @@ function CropDrawer({ open, onClose, cropName, stateFilter, profile }) {
   return (
     <div className="fixed inset-0 z-50">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="absolute right-0 top-0 h-full w-full max-w-xl bg-white shadow-xl p-5 overflow-y-auto">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">{name || "Crop"}</h3>
-          <Button variant="outline" onClick={onClose}>Close</Button>
+      <div className="absolute right-0 top-0 h-full w-full sm:max-w-xl bg-white shadow-xl p-4 sm:p-5 overflow-y-auto">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-lg font-semibold truncate pr-2">{name || "Crop"}</h3>
+          <Button variant="outline" onClick={onClose} size="sm">Close</Button>
         </div>
-        <p className="text-sm text-muted-foreground">Quick profile: agronomy, sowing windows, market links.</p>
-        <div className="mt-4 space-y-4 text-sm">
+        <p className="text-sm text-muted-foreground mb-4">Quick profile: agronomy, sowing windows, market links.</p>
+        <div className="space-y-4 text-sm">
           <div>
-            <div className="text-xs uppercase text-muted-foreground mb-1">Agronomy</div>
-            <p>{profile?.agronomy || "Details coming soon. Toggle Live data once backend is ready."}</p>
+            <div className="text-xs uppercase text-muted-foreground mb-2">Agronomy</div>
+            <p className="leading-relaxed">{profile?.agronomy || "Details coming soon. Toggle Live data once backend is ready."}</p>
           </div>
           <div>
-            <div className="text-xs uppercase text-muted-foreground mb-1">Sowing Windows {stateFilter && stateFilter !== 'All India' ? `• ${stateFilter}` : ''}</div>
+            <div className="text-xs uppercase text-muted-foreground mb-2">Sowing Windows {stateFilter && stateFilter !== 'All India' ? `• ${stateFilter}` : ''}</div>
             <div className="rounded-lg border p-3">
               {(profile?.sowing?.length ? profile.sowing : [{ state: "All India", season: "Kharif", window: "Jun–Jul" }]).map((row, idx) => (
-                <div key={idx} className="flex items-center justify-between py-1 border-b last:border-b-0">
-                  <span>{row.state}</span>
-                  <span className="text-muted-foreground">{row.season} • {row.window}</span>
+                <div key={idx} className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2 border-b last:border-b-0 gap-1">
+                  <span className="font-medium">{row.state}</span>
+                  <span className="text-muted-foreground text-xs sm:text-sm">{row.season} • {row.window}</span>
                 </div>
               ))}
             </div>
           </div>
           <div>
-            <div className="text-xs uppercase text-muted-foreground mb-1">Market</div>
-            <div className="flex gap-3">
+            <div className="text-xs uppercase text-muted-foreground mb-2">Market</div>
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               {agmarknetUrl && (
-                <a target="_blank" rel="noreferrer" className="underline" href={agmarknetUrl}>Agmarknet prices</a>
+                <a target="_blank" rel="noreferrer" className="underline text-blue-600 hover:text-blue-800" href={agmarknetUrl}>Agmarknet prices</a>
               )}
-              <a target="_blank" rel="noreferrer" className="underline" href={mspUrl}>MSP (official)</a>
+              <a target="_blank" rel="noreferrer" className="underline text-blue-600 hover:text-blue-800" href={mspUrl}>MSP (official)</a>
             </div>
           </div>
         </div>
@@ -277,36 +277,39 @@ export default function FarmerPlatform() {
       {/* Top nav */}
       <header className="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-2xl bg-emerald-600 grid place-content-center shadow-sm">
-              <Leaf className="h-5 w-5 text-white" />
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+            <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-2xl bg-emerald-600 grid place-content-center shadow-sm flex-shrink-0">
+              <Leaf className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </div>
-            <div>
-              <div className="text-lg font-semibold leading-tight">Farmer Complete</div>
-              <div className="text-xs text-muted-foreground -mt-0.5">Unified farm ops & marketplace</div>
+            <div className="min-w-0 flex-1">
+              <div className="text-base sm:text-lg font-semibold leading-tight truncate">Farmer Complete</div>
+              <div className="text-xs text-muted-foreground -mt-0.5 hidden sm:block">Unified farm ops & marketplace</div>
             </div>
-            <Badge className="ml-3 capitalize" variant="secondary">{env}</Badge>
+            <Badge className="ml-2 sm:ml-3 capitalize flex-shrink-0" variant="secondary">{env}</Badge>
           </div>
 
-          <div className="flex items-center gap-2">
-            <div className="hidden md:flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+            <div className="hidden lg:flex items-center gap-2">
               <div className="relative">
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input className="w-72 pl-8" placeholder="Search fields, orders, inputs…" />
+                <Input className="w-64 xl:w-72 pl-8" placeholder="Search fields, orders, inputs…" />
               </div>
               <Button variant="outline" size="sm" className="gap-1" onClick={() => setRange(range === 'Last 7 days' ? 'Last 30 days' : 'Last 7 days')}>
-                {range} <ChevronDown className="h-4 w-4" />
+                <span className="hidden xl:inline">{range}</span>
+                <span className="xl:hidden">Range</span>
+                <ChevronDown className="h-4 w-4" />
               </Button>
             </div>
 
             <Button variant="ghost" size="sm" className="gap-1" onClick={() => setEnv(env === 'develop' ? 'main' : 'develop')}>
-              {env}
+              <span className="hidden sm:inline">{env}</span>
+              <span className="sm:hidden">Env</span>
               <ChevronDown className="h-4 w-4" />
             </Button>
 
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-rose-500 text-[10px] text-white grid place-content-center">3</span>
+            <Button variant="ghost" size="icon" className="relative flex-shrink-0">
+              <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 rounded-full bg-rose-500 text-[9px] sm:text-[10px] text-white grid place-content-center">3</span>
             </Button>
           </div>
         </div>
@@ -315,9 +318,9 @@ export default function FarmerPlatform() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <Tabs defaultValue="landing" className="w-full">
           <TabsList className="grid grid-cols-3 w-full md:w-auto">
-            <TabsTrigger value="landing">Public Landing</TabsTrigger>
-            <TabsTrigger value="dashboard">Farmer Dashboard</TabsTrigger>
-            <TabsTrigger value="crops">Crops</TabsTrigger>
+            <TabsTrigger value="landing" className="text-xs sm:text-sm">Public Landing</TabsTrigger>
+            <TabsTrigger value="dashboard" className="text-xs sm:text-sm">Farmer Dashboard</TabsTrigger>
+            <TabsTrigger value="crops" className="text-xs sm:text-sm">Crops</TabsTrigger>
           </TabsList>
 
           {/* LANDING */}
@@ -402,22 +405,33 @@ export default function FarmerPlatform() {
           {/* DASHBOARD */}
           <TabsContent value="dashboard" className="mt-6">
             {/* Breadcrumb / context */}
-            <div className="flex items-center justify-between gap-3 mb-4">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4" />
-                <span>Farm: Green Acres</span>
-                <span>•</span>
-                <Calendar className="h-4 w-4" />
-                <span>Season: Kharif 2025</span>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 flex-shrink-0" />
+                  <span>Farm: Green Acres</span>
+                </div>
+                <span className="hidden sm:inline">•</span>
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 flex-shrink-0" />
+                  <span>Season: Kharif 2025</span>
+                </div>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" className="gap-2"><SettingsIcon className="h-4 w-4" /> Settings</Button>
-                <Button size="sm" className="gap-2"><Truck className="h-4 w-4" /> New Task</Button>
+                <Button variant="outline" size="sm" className="gap-1 sm:gap-2 text-xs sm:text-sm">
+                  <SettingsIcon className="h-4 w-4" /> 
+                  <span className="hidden sm:inline">Settings</span>
+                </Button>
+                <Button size="sm" className="gap-1 sm:gap-2 text-xs sm:text-sm">
+                  <Truck className="h-4 w-4" /> 
+                  <span className="hidden sm:inline">New Task</span>
+                  <span className="sm:hidden">New</span>
+                </Button>
               </div>
             </div>
 
             {/* KPI cards */}
-            <div className="grid md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
               <StatCard icon={<CloudSun className="h-4 w-4 text-emerald-600" />} label={`Weather • ${weather.city}`} value={`${weather.today}°C`} sub={`H:${weather.hi}°  L:${weather.lo}°  Rain ${weather.rainChance}%`} />
               <StatCard icon={<Activity className="h-4 w-4 text-sky-600" />} label="Soil Moisture (avg)" value={`${moistureAvg}%`} sub="Optimal: 30–45%" />
               <StatCard icon={<BarChart3 className="h-4 w-4 text-indigo-600" />} label="Yield Forecast" value="+7.8%" sub="vs last season" />
@@ -425,12 +439,12 @@ export default function FarmerPlatform() {
             </div>
 
             {/* Charts & lists */}
-            <div className="grid lg:grid-cols-3 gap-4 mt-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
               <Card className="lg:col-span-2">
                 <CardHeader>
                   <CardTitle className="text-base">Yield vs Rainfall</CardTitle>
                 </CardHeader>
-                <CardContent className="h-64">
+                <CardContent className="h-48 sm:h-64">
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart data={weekly} />
                   </ResponsiveContainer>
@@ -460,7 +474,7 @@ export default function FarmerPlatform() {
               </Card>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-4 mt-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
               <Card className="lg:col-span-2">
                 <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle className="text-base">Today's Tasks</CardTitle>
@@ -469,19 +483,19 @@ export default function FarmerPlatform() {
                 <CardContent>
                   <ul className="space-y-2">
                     {tasks.map((t) => (
-                      <li key={t.id} className="flex items-center justify-between rounded-xl border p-3">
-                        <div className="flex items-center gap-3">
-                          <Badge variant={t.priority === "High" ? "destructive" : t.priority === "Medium" ? "secondary" : "outline"}>
+                      <li key={t.id} className="flex flex-col sm:flex-row sm:items-center justify-between rounded-xl border p-3 gap-3">
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                          <Badge variant={t.priority === "High" ? "destructive" : t.priority === "Medium" ? "secondary" : "outline"} className="flex-shrink-0">
                             {t.priority}
                           </Badge>
-                          <div>
-                            <div className="font-medium">{t.title}</div>
+                          <div className="min-w-0 flex-1">
+                            <div className="font-medium text-sm sm:text-base truncate">{t.title}</div>
                             <div className="text-xs text-muted-foreground">Due: {t.due}</div>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Button size="sm" variant="outline">Complete</Button>
-                          <Button size="sm">Start</Button>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <Button size="sm" variant="outline" className="text-xs">Complete</Button>
+                          <Button size="sm" className="text-xs">Start</Button>
                         </div>
                       </li>
                     ))}
@@ -496,12 +510,12 @@ export default function FarmerPlatform() {
                 <CardContent>
                   <div className="text-sm">
                     {orders.map((o) => (
-                      <div key={o.id} className="flex items-start justify-between py-2 border-b last:border-b-0">
-                        <div>
-                          <div className="font-medium">{o.item}</div>
+                      <div key={o.id} className="flex items-start justify-between py-2 border-b last:border-b-0 gap-2">
+                        <div className="min-w-0 flex-1">
+                          <div className="font-medium truncate">{o.item}</div>
                           <div className="text-xs text-muted-foreground">{o.id} • Qty {o.qty}</div>
                         </div>
-                        <div className="text-right">
+                        <div className="text-right flex-shrink-0">
                           <div className="font-medium">{o.price}</div>
                           <Badge className="mt-1" variant="secondary">{o.status}</Badge>
                         </div>
@@ -513,16 +527,17 @@ export default function FarmerPlatform() {
             </div>
 
             {/* Alerts */}
-            <div className="grid md:grid-cols-3 gap-4 mt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
               {alerts.map((a) => (
                 <Card key={a.id} className="border-amber-200/60">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <AlertTriangle className="h-4 w-4 text-amber-600" /> Alert · {a.type}
+                    <CardTitle className="text-sm sm:text-base flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4 text-amber-600 flex-shrink-0" /> 
+                      <span className="truncate">Alert · {a.type}</span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-sm text-muted-foreground flex items-start gap-2">
-                    <div className="mt-0.5">{a.icon}</div>
+                    <div className="mt-0.5 flex-shrink-0">{a.icon}</div>
                     <span>{a.msg}</span>
                   </CardContent>
                 </Card>
@@ -533,32 +548,33 @@ export default function FarmerPlatform() {
           {/* CROPS */}
           <TabsContent value="crops" className="mt-6">
             <section className="mb-4">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
-                  <Search className="h-4 w-4 text-muted-foreground" />
-                  <Input value={cropSearch} onChange={(e) => setCropSearch(e.target.value)} className="w-64" placeholder="Search crops…" />
+                  <Search className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                  <Input value={cropSearch} onChange={(e) => setCropSearch(e.target.value)} className="flex-1 min-w-0" placeholder="Search crops…" />
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  <select value={seasonFilter} onChange={(e) => setSeasonFilter(e.target.value)} className="h-9 rounded-md border px-2">
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <select value={seasonFilter} onChange={(e) => setSeasonFilter(e.target.value)} className="h-9 rounded-md border px-2 flex-1 sm:flex-none">
                     <option value="all">All seasons</option>
                     <option value="Kharif">Kharif</option>
                     <option value="Rabi">Rabi</option>
                     <option value="Zaid">Zaid</option>
                   </select>
-                  <select value={stateFilter} onChange={(e) => setStateFilter(e.target.value)} className="h-9 rounded-md border px-2 w-56">
+                  <select value={stateFilter} onChange={(e) => setStateFilter(e.target.value)} className="h-9 rounded-md border px-2 flex-1 sm:w-56">
                     {indiaStates.map((s) => (
                       <option key={s} value={s}>{s}</option>
                     ))}
                   </select>
-                  <Button size="sm" variant={useLive ? "default" : "outline"} onClick={() => setUseLive((v) => !v)}>
-                    {useLive ? "Live data: ON" : "Live data: OFF"}
+                  <Button size="sm" variant={useLive ? "default" : "outline"} onClick={() => setUseLive((v) => !v)} className="flex-shrink-0">
+                    <span className="hidden sm:inline">{useLive ? "Live data: ON" : "Live data: OFF"}</span>
+                    <span className="sm:hidden">{useLive ? "Live ON" : "Live OFF"}</span>
                   </Button>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground">Major and commonly grown crops organized by category. Click a crop to view its profile.</p>
+              <p className="text-sm text-muted-foreground mt-2">Major and commonly grown crops organized by category. Click a crop to view its profile.</p>
             </section>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredGroups.map((g) => (
                 <Card key={g.name} className="backdrop-blur supports-[backdrop-filter]:bg-white/60">
                   <CardHeader className="pb-2">
@@ -567,7 +583,7 @@ export default function FarmerPlatform() {
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
                       {g.items.map((item) => (
-                        <Badge key={item} asChild variant="secondary" className="whitespace-nowrap cursor-pointer">
+                        <Badge key={item} asChild variant="secondary" className="text-xs cursor-pointer break-words">
                           <button onClick={() => { setSelectedCrop(item); setProfile(cropProfilesSeed[item] || null); setDrawerOpen(true); }}>{item}</button>
                         </Badge>
                       ))}
