@@ -46,3 +46,22 @@ jobs:
         run: |
           cd frontend
           npm test --silent || echo "no tests"
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+      - name: Upload frontend build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/build
+      - name: Upload frontend coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage 
+          path: frontend/coverage/lcov-report/coverage.lcov
+      - name: Upload frontend test results
+        uses: actions/upload-artifact@v4  
+        with:
+          name: frontend-test-results
