@@ -10,33 +10,30 @@ jobs:
   backend-ci:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install backend dependencies
         run: |
-          cd backend
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r backend/requirements.txt
           pip install pytest
+
       - name: Run backend tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: |
-          cd backend
-          python -m pytest -q
+          python -m pytest -q backend/tests
 
   frontend-ci:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
 
@@ -44,7 +41,30 @@ jobs:
         run: |
           cd frontend
           npm install
+
       - name: Run frontend tests
         run: |
           cd frontend
           npm test --silent || echo "no tests"
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+      - name: Upload frontend build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/dist
+      - name: Upload frontend coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage 
+          path: frontend/coverage/lcov-report/coverage.lcov
+          if-no-files-found: ignore
+      - name: Upload frontend test results
+        uses: actions/upload-artifact@v4  
+        with:
+          name: frontend-test-results
+          path: frontend/test-results
+          if-no-files-found: ignore

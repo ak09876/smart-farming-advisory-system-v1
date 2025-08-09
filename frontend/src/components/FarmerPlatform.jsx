@@ -4,7 +4,7 @@ import {
   Leaf,
   CloudSun,
   BarChart3,
-  Tractor,
+  Truck,
   ShoppingBag,
   Bell,
   Settings as SettingsIcon,
@@ -374,7 +374,7 @@ export default function FarmerPlatform() {
             <section className="mt-10 grid md:grid-cols-3 gap-5">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-base font-semibold flex items-center gap-2"><Tractor className="h-5 w-5" /> Operations</CardTitle>
+                  <CardTitle className="text-base font-semibold flex items-center gap-2"><Truck className="h-5 w-5" /> Operations</CardTitle>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground">
                   Plan seasons, schedule irrigation, and track inputs across plots.
@@ -412,7 +412,7 @@ export default function FarmerPlatform() {
               </div>
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" className="gap-2"><SettingsIcon className="h-4 w-4" /> Settings</Button>
-                <Button size="sm" className="gap-2"><Tractor className="h-4 w-4" /> New Task</Button>
+                <Button size="sm" className="gap-2"><Truck className="h-4 w-4" /> New Task</Button>
               </div>
             </div>
 
